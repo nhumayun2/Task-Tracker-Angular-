@@ -1,0 +1,84 @@
+<body class="bg-gray-100 h-screen flex">
+
+    <!-- Vertical Navigation Bar -->
+    <aside class="w-64 bg-gradient-to-b from-purple-700 to-indigo-700 text-white flex flex-col justify-between shadow-lg">
+        <!-- Navigation Items -->
+        <div>
+          <!-- Website Name -->
+          <div class="p-4 text-2xl font-bold text-center border-b border-purple-500 animate-fade-in">
+            My Website
+          </div>
+          <!-- Navigation Links -->
+          <nav class="mt-4 space-y-2">
+            <a [class] routerLink="/dashBoard" routerLinkActive="active" class="block py-3 px-4 hover:bg-purple-600 rounded-md text-white font-semibold transition-transform duration-300 ease-in-out transform hover:scale-105 shadow-sm">
+              Dashboard
+            </a>
+            <a routerLink="/taskManager" routerLinkActive="active" class="block py-3 px-4 hover:bg-purple-600 rounded-md transition-transform duration-300 ease-in-out transform hover:scale-105 shadow-sm">
+              Task Management
+            </a>
+            <a routerLink="/additionalFeature" routerLinkActive="active" class="block py-3 px-4 hover:bg-purple-600 rounded-md transition-transform duration-300 ease-in-out transform hover:scale-105 shadow-sm">
+              Additional Features
+            </a>
+          </nav>
+        </div>
+    
+        <!-- Account Button -->
+        <div class="p-4 border-t border-purple-500">
+          <button  (click)="moveToAccSettings()" class="w-full py-2 bg-purple-600 hover:bg-purple-500 transition-transform duration-300 ease-in-out transform hover:scale-105 rounded-md text-white font-medium shadow-md">
+            Account Settings
+          </button>
+        </div>
+      </aside>
+  
+    <!-- Main Content Area -->
+    <main class="flex-1 p-8 space-y-6">
+      <!-- Page Header -->
+      <div>
+        <h1 class="text-3xl font-semibold text-gray-800">Dashboard</h1>
+        <p class="text-gray-600">Overview of your task management progress.</p>
+      </div>
+  
+      <!-- Dashboard Information -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Total Tasks -->
+        <div class="bg-white shadow-md rounded-lg p-6 flex items-center">
+          <div class="bg-purple-100 text-purple-600 w-16 h-16 flex items-center justify-center rounded-full mr-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M10 3a7 7 0 100 14 7 7 0 000-14zM8 9h4a1 1 0 010 2H8a1 1 0 010-2z" />
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-2xl font-semibold text-gray-800">{{currentTotalTasks}}</h2>
+            <p class="text-gray-600">Total Tasks</p>
+          </div>
+        </div>
+  
+        <!-- Completed Tasks -->
+        <div class="bg-white shadow-md rounded-lg p-6 flex items-center">
+          <div class="bg-green-100 text-green-600 w-16 h-16 flex items-center justify-center rounded-full mr-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.707-5.293a1 1 0 011.414 0l3-3a1 1 0 10-1.414-1.414L9 10.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-2xl font-semibold text-gray-800">{{currentCompletedTasks}}</h2>
+            <p class="text-gray-600">Completed Tasks</p>
+          </div>
+        </div>
+  
+        <!-- Pending Tasks -->
+        <div class="bg-white shadow-md rounded-lg p-6 flex items-center">
+          <div class="bg-yellow-100 text-yellow-600 w-16 h-16 flex items-center justify-center rounded-full mr-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-9h2a1 1 0 100-2h-2a1 1 0 100 2zm0 4h2a1 1 0 100-2h-2a1 1 0 100 2z" />
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-2xl font-semibold text-gray-800">{{currentPendingTasks}}</h2>
+            <p class="text-gray-600">Pending Tasks</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  
+  </body>

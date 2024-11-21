@@ -1,0 +1,155 @@
+<body class="bg-gray-100 h-screen flex overflow-hidden">
+
+  <!-- Vertical Navigation Bar -->
+  <aside class="w-64 bg-gradient-to-b from-purple-700 to-indigo-700 text-white flex flex-col justify-between shadow-lg sticky top-0 h-screen">
+    <!-- Navigation Items -->
+    <div>
+      <!-- Website Name -->
+      <div class="p-4 text-2xl font-bold text-center border-b border-purple-500 animate-fade-in">
+        My Website
+      </div>
+      <!-- Navigation Links -->
+      <nav class="mt-4 space-y-2">
+        <a [class] routerLink="/dashBoard" routerLinkActive="active"
+          class="block py-3 px-4 hover:bg-purple-600 rounded-md text-white font-semibold transition-transform duration-300 ease-in-out transform hover:scale-105 shadow-sm">
+          Dashboard
+        </a>
+        <a routerLink="/taskManager" routerLinkActive="active"
+          class="block py-3 px-4 hover:bg-purple-600 rounded-md transition-transform duration-300 ease-in-out transform hover:scale-105 shadow-sm">
+          Task Management
+        </a>
+        <a routerLink="/additionalFeature" routerLinkActive="active"
+          class="block py-3 px-4 hover:bg-purple-600 rounded-md transition-transform duration-300 ease-in-out transform hover:scale-105 shadow-sm">
+          Additional Features
+        </a>
+      </nav>
+    </div>
+
+    <!-- Account Button -->
+    <div class="p-4 border-t border-purple-500">
+      <button (click)="moveToAccSettings()"
+        class="w-full py-2 bg-purple-600 hover:bg-purple-500 transition-transform duration-300 ease-in-out transform hover:scale-105 rounded-md text-white font-medium shadow-md">
+        Account Settings
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 p-8 space-y-6 overflow-auto">
+    <!-- Task Management Header -->
+    <div>
+      <h1 class="text-4xl font-bold mb-6 text-gray-800">Task Management</h1>
+    </div>
+
+    <!-- Add Task Form -->
+    <div class="bg-white rounded shadow-lg p-6">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">Add New Task</h2>
+      <form class="space-y-4">
+        <div>
+          <label class="block text-gray-600 font-medium mb-2">Title</label>
+          <input [(ngModel)]="taskStructure.title" type="text" name="title"
+            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Task Title" required />
+        </div>
+        <div>
+          <label class="block text-gray-600 font-medium mb-2">Description</label>
+          <textarea [(ngModel)]="taskStructure.description" name="description"
+            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Task Description" required></textarea>
+        </div>
+        <div class="flex space-x-4">
+          <div class="flex-1">
+            <label class="block text-gray-600 font-medium mb-2">Priority</label>
+            <select [(ngModel)]="taskStructure.priority" name="priority"
+              class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required>
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+          <div class="flex-1">
+            <label class="block text-gray-600 font-medium mb-2">Deadline</label>
+            <input [(ngModel)]="taskStructure.deadline" type="date" name="deadline"
+              class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required />
+          </div>
+        </div>
+        <div>
+          <label class="block text-gray-600 font-medium mb-2">Status</label>
+          <select [(ngModel)]="taskStructure.status" name="status"
+            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required>
+            <option value="To-Do">To-Do</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </div>
+        <button (click)="addTask()" type="submit"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md font-medium shadow-lg transition duration-300">
+          Add Task
+        </button>
+      </form>
+    </div>
+
+    <!-- Task List -->
+    <div class="bg-white rounded shadow-lg p-6 space-y-4">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">Task List</h2>
+      <!-- Filter Tasks -->
+      <button (click)="filterCondition = !filterCondition" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium shadow-md transition duration-300">Filter Tasks</button>
+      <select [disabled]="!filterCondition" (change)="filterTasks($event)" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <option value="" disabled selected>Select option</option>
+        <option value="To-Do">To-Do</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Completed">Completed</option>
+      </select>
+      <!-- Task Cards -->
+      <div *ngIf="!filterCondition" class="divide-y divide-gray-500 space-y-4">
+        <div *ngFor="let task of allTasks; let i=index" [ngClass]="{
+          'bg-red-200': task.status === 'To-Do',
+          'bg-yellow-200': task.status === 'In Progress',
+          'bg-green-200': task.status === 'Completed'
+        }" class="py-4 flex justify-between items-center rounded-md p-4">
+          <div>
+            <h3 class="text-lg font-bold text-gray-800">{{ task.title }}</h3>
+            <p class="text-gray-600">{{ task.description }}</p>
+            <p class="text-sm text-gray-500">Priority: {{ task.priority }} | Deadline: {{ task.deadline }}</p>
+            <p class="text-sm text-gray-500">Status: {{ task.status }}</p>
+          </div>
+          <div class="flex space-x-2">
+            <button (click)="editTask(i)" class="bg-yellow-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-yellow-600 transition">
+              Edit
+            </button>
+            <button (click)="deleteTask(i)" class="bg-red-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-red-700 transition">
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Tasks -->
+      <div *ngIf="filterCondition" class="divide-y divide-gray-500 space-y-4">
+        <div *ngFor="let task of filteredTasks; let i=index" [ngClass]="{
+          'bg-red-200': task.status === 'To-Do',
+          'bg-yellow-200': task.status === 'In Progress',
+          'bg-green-200': task.status === 'Completed'
+        }" class="py-4 flex justify-between items-center rounded-md p-4">
+          <div>
+            <h3 class="text-lg font-bold text-gray-800">{{ task.title }}</h3>
+            <p class="text-gray-600">{{ task.description }}</p>
+            <p class="text-sm text-gray-500">Priority: {{ task.priority }} | Deadline: {{ task.deadline }}</p>
+            <p class="text-sm text-gray-500">Status: {{ task.status }}</p>
+          </div>
+          <div class="flex space-x-2">
+            <button (click)="editTask(i)" class="bg-yellow-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-yellow-600 transition">
+              Edit
+            </button>
+            <button (click)="deleteTask(i)" class="bg-red-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-red-700 transition">
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
